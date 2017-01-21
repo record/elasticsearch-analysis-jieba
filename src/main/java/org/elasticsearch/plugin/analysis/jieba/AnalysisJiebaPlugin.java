@@ -33,6 +33,7 @@ public class AnalysisJiebaPlugin extends Plugin implements AnalysisPlugin {
 
         extra.put("jieba_search", JiebaAnalyzerProvider::getJiebaSearchAnalyzerProvider);
         extra.put("jieba_index", JiebaAnalyzerProvider::getJiebaIndexAnalyzerProvider);
+        extra.put("jieba_other", JiebaAnalyzerProvider::getJiebaOtherAnalyzerProvider);
 
         return extra;
     }

@@ -7,7 +7,6 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.IndexSettings;
 
-import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.huaban.analysis.jieba.WordDictionary;
 
 public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
@@ -36,7 +35,7 @@ public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
     {
         TokenFilterFactory jiebaTokenFilterFactory = new JiebaTokenFilterFactory(
                 indexSettings, s, settings,
-                JiebaSegmenter.SegMode.SEARCH.toString());
+                "search");
 
         return jiebaTokenFilterFactory;
     }
@@ -47,7 +46,7 @@ public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
     {
         TokenFilterFactory jiebaTokenFilterFactory = new JiebaTokenFilterFactory(
                 indexSettings, s, settings,
-                JiebaSegmenter.SegMode.INDEX.toString());
+                "index");
 
         return jiebaTokenFilterFactory;
     }

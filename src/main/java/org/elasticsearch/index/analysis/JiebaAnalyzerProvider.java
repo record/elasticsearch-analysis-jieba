@@ -7,8 +7,6 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.IndexSettings;
 
-import com.huaban.analysis.jieba.JiebaSegmenter;
-
 public class JiebaAnalyzerProvider
         extends AbstractIndexAnalyzerProvider<JiebaAnalyzer>
 {
@@ -35,7 +33,7 @@ public class JiebaAnalyzerProvider
     {
         JiebaAnalyzerProvider jiebaAnalyzerProvider = new JiebaAnalyzerProvider(
                 indexSettings, environment, s, settings,
-                JiebaSegmenter.SegMode.SEARCH.toString());
+                "search");
 
         return jiebaAnalyzerProvider;
     }
@@ -46,7 +44,18 @@ public class JiebaAnalyzerProvider
     {
         JiebaAnalyzerProvider jiebaAnalyzerProvider = new JiebaAnalyzerProvider(
                 indexSettings, environment, s, settings,
-                JiebaSegmenter.SegMode.INDEX.toString());
+                "index");
+
+        return jiebaAnalyzerProvider;
+    }
+
+    public static AnalyzerProvider<? extends Analyzer> getJiebaOtherAnalyzerProvider(
+            IndexSettings indexSettings, Environment environment, String s,
+            Settings settings)
+    {
+        JiebaAnalyzerProvider jiebaAnalyzerProvider = new JiebaAnalyzerProvider(
+                indexSettings, environment, s, settings,
+                "other");
 
         return jiebaAnalyzerProvider;
     }
