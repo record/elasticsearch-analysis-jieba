@@ -1,33 +1,40 @@
 package org.elasticsearch.plugin.analysis.jieba;
 
-import org.elasticsearch.common.inject.Module;
-import org.elasticsearch.index.analysis.AnalysisModule;
-import org.elasticsearch.index.analysis.JiebaAnalysisBinderProcessor;
-import org.elasticsearch.indices.analysis.JiebaIndicesAnalysisModule;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.elasticsearch.index.analysis.AnalyzerProvider;
+import org.elasticsearch.index.analysis.JiebaAnalyzerProvider;
+import org.elasticsearch.index.analysis.JiebaTokenFilterFactory;
+import org.elasticsearch.index.analysis.TokenFilterFactory;
+import org.elasticsearch.indices.analysis.AnalysisModule.AnalysisProvider;
+import org.elasticsearch.plugins.AnalysisPlugin;
 import org.elasticsearch.plugins.Plugin;
 
-import java.util.Collection;
-import java.util.Collections;
+public class AnalysisJiebaPlugin extends Plugin implements AnalysisPlugin {
 
-public class AnalysisJiebaPlugin extends Plugin {
+    @Override
+    public Map<String, AnalysisProvider<TokenFilterFactory>> getTokenFilters()
+    {
+        Map<String, AnalysisProvider<TokenFilterFactory>> extra = new HashMap<>();
 
-	@Override
-	public String name() {
-		return "analysis-jieba";
-	}
+        extra.put("jieba_search", JiebaTokenFilterFactory::getJiebaSearchTokenFilterFactory);
+        extra.put("jieba_index", JiebaTokenFilterFactory::getJiebaIndexTokenFilterFactory);
+        extra.put("jieba_other", JiebaTokenFilterFactory::getJiebaOtherTokenFilterFactory);
 
-	@Override
-	public String description() {
-		return "jieba analysis";
-	}
+        return extra;
+    }
 
-	@Override
-	public Collection<Module> nodeModules() {
-		return Collections.<Module>singletonList(new JiebaIndicesAnalysisModule());
-	}
+    @Override
+    public Map<String, AnalysisProvider<AnalyzerProvider<? extends Analyzer>>> getAnalyzers()
+    {
+        Map<String, AnalysisProvider<AnalyzerProvider<? extends Analyzer>>> extra = new HashMap<>();
 
+        extra.put("jieba_search", JiebaAnalyzerProvider::getJiebaSearchAnalyzerProvider);
+        extra.put("jieba_index", JiebaAnalyzerProvider::getJiebaIndexAnalyzerProvider);
 
-	public void onModule(AnalysisModule module) {
-		module.addProcessor(new JiebaAnalysisBinderProcessor());
-	}
+        return extra;
+    }
+
 }
