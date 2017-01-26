@@ -94,21 +94,11 @@ curl 'http://127.0.0.1:9200/test/_analyze?analyzer=jieba_other' -d '中华人民
 ------
 
 
-```
-github-release release \
-    --user record \
-    --repo elasticsearch-analysis-jieba \
-    --tag v5.1.2 \
-    --name "v5.1.2" \
-    --description "支持 ES v5.1.2"
-
-github-release upload \
-    --user record \
-    --repo elasticsearch-analysis-jieba \
-    --tag v5.1.2 \
-    --name "elasticsearch-analysis-jieba-5.1.2-bin.zip" \
-    --label "plugin.zip" \
-    --file target/releases/elasticsearch-analysis-jieba-5.1.2-bin.zip
+```sh
+github-release \
+    record/elasticsearch-analysis-jieba \
+    v5.1.2 v5.1 "support ES 5.1.2" \
+    ./target/releases/elasticsearch-analysis-jieba-5.1.2-bin.zip
 ```
 
 
