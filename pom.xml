@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.elasticsearch</groupId>
 	<artifactId>elasticsearch-analysis-jieba</artifactId>
-	<version>2.3.5</version>
+	<version>5.1.2</version>
 	<packaging>jar</packaging>
 	<name>elasticsearch-analysis-jieba</name>
 	<url>http://maven.apache.org</url>
@@ -16,7 +16,7 @@
 	</licenses>
 
 	<properties>
-		<elasticsearch.version>2.3.5</elasticsearch.version>
+		<elasticsearch.version>5.1.2</elasticsearch.version>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<elasticsearch.assembly.descriptor>${project.basedir}/src/main/assemblies/plugin.xml</elasticsearch.assembly.descriptor>
 		<elasticsearch.plugin.name>jieba</elasticsearch.plugin.name>
@@ -24,6 +24,7 @@
 		<elasticsearch.plugin.jvm>true</elasticsearch.plugin.jvm>
 		<tests.rest.load_packaged>false</tests.rest.load_packaged>
 		<skip.unit.tests>true</skip.unit.tests>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -51,8 +52,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>

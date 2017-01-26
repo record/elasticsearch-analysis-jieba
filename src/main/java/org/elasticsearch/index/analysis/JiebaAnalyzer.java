@@ -6,22 +6,18 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.WordlistLoader;
 import org.apache.lucene.analysis.core.StopFilter;
-import org.apache.lucene.analysis.util.CharArraySet;
-import org.apache.lucene.analysis.util.WordlistLoader;
 import org.apache.lucene.util.IOUtils;
-import org.elasticsearch.common.logging.ESLogger;
-import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 
 import com.huaban.analysis.jieba.WordDictionary;
 
 public class JiebaAnalyzer extends Analyzer {
-	private final ESLogger log = Loggers.getLogger(JiebaAnalyzer.class);
-
 	private final CharArraySet stopWords;
 
 	private static final String DEFAULT_STOPWORD_FILE = "stopwords.txt";
@@ -75,9 +71,8 @@ public class JiebaAnalyzer extends Analyzer {
 		}
 	}
 
-	public JiebaAnalyzer(Settings settings, Environment env) {
-		this(settings.get("seg_mode", "index"), env.pluginsFile().resolve("jieba/dic"),
-				settings.getAsBoolean("stop", true));
+	public JiebaAnalyzer(Settings settings, Environment env, String segMode) {
+	    this(segMode, env.pluginsFile().resolve("jieba/dic"), settings.getAsBoolean("stop", true));
 	}
 
 	public JiebaAnalyzer(String segMode, Path dataPath, boolean isStop) {
@@ -87,10 +82,6 @@ public class JiebaAnalyzer extends Analyzer {
 		WordDictionary.getInstance().init(dataPath);
 		this.stopWords = isStop ? this.loadStopWords(dataPath)
 				: CharArraySet.EMPTY_SET;
-
-		this.log.info("Jieba segMode = {}", type);
-		this.log.info("JiebaAnalyzer isStop = {}", isStop);
-		this.log.info("JiebaAnalyzer stopWords = {}", this.stopWords.toString());
 	}
 
 	@Override
