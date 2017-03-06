@@ -11,9 +11,11 @@ import java.util.Collections;
 
 public class AnalysisJiebaPlugin extends Plugin {
 
+	public static String PLUGIN_NAME = "analysis-jieba";
+
 	@Override
 	public String name() {
-		return "analysis-jieba";
+		return PLUGIN_NAME;
 	}
 
 	@Override

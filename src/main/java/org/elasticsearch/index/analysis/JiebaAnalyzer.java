@@ -16,6 +16,7 @@ import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
+import org.elasticsearch.plugin.analysis.jieba.AnalysisJiebaPlugin;
 
 import com.huaban.analysis.jieba.WordDictionary;
 
@@ -76,7 +77,8 @@ public class JiebaAnalyzer extends Analyzer {
 	}
 
 	public JiebaAnalyzer(Settings settings, Environment env) {
-		this(settings.get("seg_mode", "index"), env.pluginsFile().resolve("jieba/dic"),
+		this(settings.get("seg_mode", "index"),
+				env.configFile().resolve(AnalysisJiebaPlugin.PLUGIN_NAME),
 				settings.getAsBoolean("stop", true));
 	}
 

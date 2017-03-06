@@ -7,6 +7,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.settings.IndexSettingsService;
+import org.elasticsearch.plugin.analysis.jieba.AnalysisJiebaPlugin;
 
 import com.huaban.analysis.jieba.WordDictionary;
 
@@ -20,7 +21,7 @@ public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
 		super(index, indexSettings.getSettings(), name, settings);
 		type = settings.get("seg_mode", "index");
 		Environment env = new Environment(indexSettings.getSettings());
-		WordDictionary.getInstance().init(env.pluginsFile().resolve("jieba/dic"));
+		WordDictionary.getInstance().init(env.configFile().resolve(AnalysisJiebaPlugin.PLUGIN_NAME));
 	}
 
 	@Override

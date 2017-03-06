@@ -6,17 +6,15 @@
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
-		<fileSet>  
-            <directory>${project.basedir}/src/main/dic</directory>  
-            <outputDirectory>/dic</outputDirectory>  
-        </fileSet>
-
-        <fileSet>
-            <directory>${project.basedir}/src/main/plugin-metadata</directory>
-            <outputDirectory>/</outputDirectory>
-        </fileSet>
-        
-        <fileSet>
+		<fileSet>
+			<directory>${project.basedir}/config</directory>
+			<outputDirectory>/config</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/src/main/plugin-metadata</directory>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		<fileSet>
 			<directory>${project.basedir}/_site/</directory>
 			<outputDirectory>_site/</outputDirectory>
 		</fileSet>
