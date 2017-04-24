@@ -13,6 +13,7 @@
 | 2.3.4                         | 2.3.4         | 1.0.2          |
 | 2.3.5                         | 2.3.5         | 1.0.2          |
 | 5.1.2                         | 5.1.2         | 1.0.2          |
+| 5.2.2                         | 5.2.2         | 1.0.2          |
 
 
 > 本插件包括 `jieba analyzer`、`jieba tokenizer`、`jieba token filter`，有三种模式供选择。
@@ -27,6 +28,11 @@
 ## ES 2.x 以上版本
 
 > 插件版本跟 ES 版本保持一致
+
+**5.2.2**
+```sh
+./bin/elasticsearch-plugin install https://github.com/record/elasticsearch-analysis-jieba/releases/download/v5.2.2/elasticsearch-analysis-jieba-5.2.2-bin.zip
+```
 
 **5.1.2**
 ```sh
