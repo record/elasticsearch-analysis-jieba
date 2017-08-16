@@ -1,35 +1,31 @@
 package org.elasticsearch.plugin.analysis.jieba;
 
-import org.elasticsearch.common.inject.Module;
-import org.elasticsearch.index.analysis.AnalysisModule;
-import org.elasticsearch.index.analysis.JiebaAnalysisBinderProcessor;
-import org.elasticsearch.indices.analysis.JiebaIndicesAnalysisModule;
+import org.apache.lucene.analysis.Analyzer;
+import org.elasticsearch.index.analysis.*;
+import org.elasticsearch.indices.analysis.AnalysisModule;
+import org.elasticsearch.plugins.AnalysisPlugin;
 import org.elasticsearch.plugins.Plugin;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AnalysisJiebaPlugin extends Plugin {
+public class AnalysisJiebaPlugin extends Plugin implements AnalysisPlugin {
 
 	public static String PLUGIN_NAME = "analysis-jieba";
 
 	@Override
-	public String name() {
-		return PLUGIN_NAME;
+	public Map<String, AnalysisModule.AnalysisProvider<TokenFilterFactory>> getTokenFilters() {
+		return Collections.singletonMap("jieba", JiebaTokenFilterFactory::new);
 	}
 
 	@Override
-	public String description() {
-		return "jieba analysis";
-	}
-
-	@Override
-	public Collection<Module> nodeModules() {
-		return Collections.<Module>singletonList(new JiebaIndicesAnalysisModule());
-	}
-
-
-	public void onModule(AnalysisModule module) {
-		module.addProcessor(new JiebaAnalysisBinderProcessor());
+	public Map<String, AnalysisModule.AnalysisProvider<AnalyzerProvider<? extends Analyzer>>> getAnalyzers() {
+		Map<String, AnalysisModule.AnalysisProvider<AnalyzerProvider<? extends Analyzer>>> extra = new HashMap<>();
+		extra.put("jieba", JiebaAnalyzerProvider::new);
+		extra.put("jieba_index", JiebaAnalyzerProvider::createJiebaIndexAnalyzerProvider);
+		extra.put("jieba_search", JiebaAnalyzerProvider::createJiebaSearchAnalyzerProvider);
+		extra.put("jieba_other", JiebaAnalyzerProvider::createJiebaOtherAnalyzerProvider);
+		return extra;
 	}
 }

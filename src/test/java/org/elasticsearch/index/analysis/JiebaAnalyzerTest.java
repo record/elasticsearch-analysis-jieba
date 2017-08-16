@@ -11,7 +11,7 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.junit.Test;
 
 public class JiebaAnalyzerTest {
-	Path dataPath = new File(System.getProperty("basedir"), "src/main/dic").toPath();
+	Path dataPath = new File(System.getProperty("basedir"), "config").toPath();
     String[] sentences = new String[] {
             "这是一个伸手不见五指的黑夜。我叫孙悟空，我爱北京，我爱Python和C++。",
             "我不喜欢日本和服。",

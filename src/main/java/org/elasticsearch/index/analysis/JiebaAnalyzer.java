@@ -5,14 +5,14 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.StopFilter;
-import org.apache.lucene.analysis.util.CharArraySet;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.util.WordlistLoader;
 import org.apache.lucene.util.IOUtils;
-import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
@@ -21,7 +21,7 @@ import org.elasticsearch.plugin.analysis.jieba.AnalysisJiebaPlugin;
 import com.huaban.analysis.jieba.WordDictionary;
 
 public class JiebaAnalyzer extends Analyzer {
-	private final ESLogger log = Loggers.getLogger(JiebaAnalyzer.class);
+	private final Logger log = Loggers.getLogger(JiebaAnalyzer.class);
 
 	private final CharArraySet stopWords;
 
@@ -77,7 +77,11 @@ public class JiebaAnalyzer extends Analyzer {
 	}
 
 	public JiebaAnalyzer(Settings settings, Environment env) {
-		this(settings.get("seg_mode", "index"),
+		this(settings.get("seg_mode", "index"), settings, env);
+	}
+
+	public JiebaAnalyzer(String segMode, Settings settings, Environment env) {
+		this(segMode,
 				env.configFile().resolve(AnalysisJiebaPlugin.PLUGIN_NAME),
 				settings.getAsBoolean("stop", true));
 	}
