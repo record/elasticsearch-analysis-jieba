@@ -19,6 +19,7 @@ public final class JiebaTokenFilter extends TokenFilter {
 
     JiebaSegmenter segmenter;
 
+    private int currentOffset;
     private Iterator<SegToken> tokenIter;
     private List<SegToken> array;
     private String type;
@@ -29,6 +30,7 @@ public final class JiebaTokenFilter extends TokenFilter {
 
     public JiebaTokenFilter(String type, TokenStream input) {
         super(input);
+        this.currentOffset = 0;
         this.type = type;
         segmenter = new JiebaSegmenter();
     }
@@ -37,12 +39,12 @@ public final class JiebaTokenFilter extends TokenFilter {
     public boolean incrementToken() throws IOException {
         if (tokenIter == null || !tokenIter.hasNext()) {
             if (input.incrementToken()) {
+                String token = termAtt.toString();
                 if (type.equals("index"))
                     array = segmenter
-                            .process(termAtt.toString(), SegMode.INDEX);
+                            .process(token, SegMode.INDEX);
                 else if (type.equals("other")) {
                     array = new ArrayList<SegToken>();
-                    String token = termAtt.toString();
                     char[] ctoken = token.toCharArray();
                     for (int i = 0; i < ctoken.length; i++) {
                         /* 全角=>半角 */
@@ -54,10 +56,24 @@ public final class JiebaTokenFilter extends TokenFilter {
                             ctoken[i] = (char) (ctoken[i] + 0x20);
                     }
                     token = String.valueOf(ctoken);
-                    array.add(new SegToken(token, 0, token.length()));
+                    array.add(new SegToken(token, currentOffset, token.length()));
                 } else
                     array = segmenter.process(termAtt.toString(),
                             SegMode.SEARCH);
+                for (SegToken tok : array) {
+                    tok.startOffset += this.currentOffset;
+                    tok.endOffset += this.currentOffset;
+                }
+                this.currentOffset += token.length();
+                array.sort((
+                    SegToken lhs, SegToken rhs) -> (
+                        lhs.startOffset == rhs.startOffset ? ( lhs.endOffset == rhs.endOffset ? 0
+                                                                                              : ( lhs.endOffset < rhs.endOffset ? -1 : 1))
+                                                           : ( lhs.startOffset < rhs.startOffset ? -1 : 1 )));
+
+                for (int i = 0; i < array.size(); ++i) {
+                    SegToken item = array.get(i);
+                }
                 tokenIter = array.iterator();
                 if (!tokenIter.hasNext())
                     return false;
@@ -79,6 +95,7 @@ public final class JiebaTokenFilter extends TokenFilter {
     @Override
     public void reset() throws IOException {
         super.reset();
+        currentOffset = 0;
         tokenIter = null;
     }
 
